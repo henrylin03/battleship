@@ -1,6 +1,10 @@
-const createShip = () => {
-  console.log("hello");
-  return true;
+const createShip = (length = 1) => {
+  let hitCount = 0;
+
+  const hit = () => hitCount++;
+  const isSunk = () => hitCount === length;
+
+  return { hit, isSunk };
 };
 
 export default createShip;
