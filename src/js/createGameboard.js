@@ -40,8 +40,10 @@ const createGameboard = () => {
   };
 
   const allShipsSunk = () => {
-    const statuses = Object.values(ships).map((ship) => ship.isSunk());
-    return statuses;
+    const statuses = [];
+    for (const shipType in ships) statuses.push(ships[shipType].isSunk());
+
+    return statuses.every((s) => s);
   };
 
   return { allShipsSunk, placeShip, receiveAttack };

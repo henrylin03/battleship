@@ -25,29 +25,29 @@ describe("Check all ships have been sunk", () => {
     expect(gameboard.allShipsSunk()).toBe(false);
   });
 
-  const ATTACK_COORDINATES = [
-    [0, 0],
-    [1, 0],
-    [2, 0],
-    [3, 0],
-    [4, 0],
-    [0, 1],
-    [1, 1],
-    [2, 1],
-    [3, 1],
-    [0, 2],
-    [1, 2],
-    [2, 2],
-    [0, 3],
-    [1, 3],
-    [2, 3],
-    [0, 4],
-    [1, 4],
-  ];
-
-  ATTACK_COORDINATES.forEach((c) => gameboard.receiveAttack(c));
-
   test("All ship are sunk after they all got hit", () => {
+    const ATTACK_COORDINATES = [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
+      [4, 0],
+      [0, 1],
+      [1, 1],
+      [2, 1],
+      [3, 1],
+      [0, 2],
+      [1, 2],
+      [2, 2],
+      [0, 3],
+      [1, 3],
+      [2, 3],
+      [0, 4],
+      [1, 4],
+    ];
+
+    ATTACK_COORDINATES.forEach((c) => gameboard.receiveAttack(c));
+
     expect(gameboard.allShipsSunk()).toBe(true);
   });
 });
