@@ -1,8 +1,5 @@
 import createShip from "./createShip";
 
-// helper to check if arrays are the same
-const isSame = (arr1, arr2) => JSON.stringify(arr1) === JSON.stringify(arr2);
-
 const createGameboard = () => {
   const ships = {
     carrier: createShip(5),
