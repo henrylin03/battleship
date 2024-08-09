@@ -32,16 +32,14 @@ const createGameboard = () => {
   };
 
   const receiveAttack = (coordinates) => {
-    // a part of the ship is at attacked coordinates
-    if (coordinatesWithShip.has(JSON.stringify(coordinates))) {
-      // the specific ship takes a hit - //todo: we need to track which of the ships is in which position... maybe an object would be better rather than just coordinates??
-    }
+    const coordinatesStr = JSON.stringify(coordinates);
+
+    if (coordinatesStr in coordinatesWithShip) {
+      const shipType = coordinatesWithShip[coordinatesStr];
+      ships[shipType].hit();
+    } else coordinatesMiss.add(coordinatesStr);
 
     // todo: you cannot attack coordinates that have either been missed or hit
-
-    // check if attack hit a ship
-    // if yes, send .hit() to ship
-    // if no, records coordinates of missed shot
   };
 
   return { placeShip, receiveAttack };
