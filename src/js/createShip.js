@@ -2,7 +2,7 @@
 const isOutOfBounds = (coordinates) => coordinates.some((c) => c < 0 || c > 9);
 
 const createShip = (length) => {
-  const coordinates = [...Array(length)].map(() => Array(2).fill(0));
+  const coordinates = [...Array(length)].map(() => Array(2).fill(null));
   let hitCount = 0;
 
   const hit = () => hitCount++;
