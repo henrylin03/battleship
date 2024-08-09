@@ -39,7 +39,12 @@ const createGameboard = () => {
     // todo: you cannot attack coordinates that have either been missed or hit
   };
 
-  return { placeShip, receiveAttack };
+  const allShipsSunk = () => {
+    const statuses = Object.values(ships).map((ship) => ship.isSunk());
+    return statuses;
+  };
+
+  return { allShipsSunk, placeShip, receiveAttack };
 };
 
 export default createGameboard;
