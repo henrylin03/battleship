@@ -9,7 +9,9 @@ const createGameboard = () => {
     patrolBoat: createShip(2),
   };
   const coordinatesWithShip = {};
-  const coordinatesMiss = new Set();
+  const misses = new Set();
+
+  const getMisses = () => misses;
 
   const placeShip = (shipType, startCoordinates, isHorizontal) => {
     const ship = ships[shipType];
@@ -34,9 +36,9 @@ const createGameboard = () => {
     if (coordinatesStr in coordinatesWithShip) {
       const shipType = coordinatesWithShip[coordinatesStr];
       ships[shipType].hit();
-    } else coordinatesMiss.add(coordinatesStr);
+    } else misses.add(coordinatesStr);
 
-    // todo: you cannot attack coordinates that have either been missed or hit
+    // todo: you cannot attack coordinates that have either been misses or hit
   };
 
   const allShipsSunk = () => {
@@ -46,7 +48,7 @@ const createGameboard = () => {
     return statuses.every((s) => s);
   };
 
-  return { allShipsSunk, placeShip, receiveAttack };
+  return { allShipsSunk, getMisses, placeShip, receiveAttack };
 };
 
 export default createGameboard;

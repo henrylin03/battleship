@@ -11,7 +11,18 @@ describe("Cannot place ships on the board when there is already a part of the sh
   });
 });
 
-// todo: write test for missed attacks set (this needs to be exposed)
+test("Missed shots are recorded on gameboard", () => {
+  const gameboard = createGameboard();
+  gameboard.placeShip("patrolBoat", [0, 0], true);
+
+  gameboard.receiveAttack([9, 9]);
+  gameboard.receiveAttack([7, 7]);
+
+  const misses = gameboard.getMisses();
+
+  expect(misses).toContain(JSON.stringify([9, 9]));
+  expect(misses).toContain(JSON.stringify([7, 7]));
+});
 
 describe("Check all ships have been sunk", () => {
   const gameboard = createGameboard();
