@@ -1,5 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+:root {
+  --primary-colour: #0097ff;
+  --navy-colour: #142f4c;
+  --light-gray-colour: #f1f1e6;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
+body {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Open Sans", Helvetica, sans-serif;
+}
+
+/* HEADER */
+header {
+  padding: 15px 5px;
+  color: var(--navy-colour);
+}
+
+/* MAIN */
+#status {
+  background-color: var(--light-gray-colour);
+  min-width: 12vw;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* MAIN - GRIDS */
