@@ -1,7 +1,7 @@
 import createGameboard from "./createGameboard";
 
-const createPlayer = (name = "PlayerOne", isComputer = false) => {
-  name = isComputer ? "Computer" : name;
+const createPlayer = (isComputer = false) => {
+  const name = isComputer ? "Computer" : "You";
   const board = createGameboard();
 
   return { name, board };

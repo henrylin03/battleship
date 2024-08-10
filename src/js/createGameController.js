@@ -2,7 +2,7 @@ import createPlayer from "./createPlayer";
 
 const createGameController = () => {
   let round = 1;
-  const players = [createPlayer(), createPlayer(_, true)];
+  const players = [createPlayer(), createPlayer(true)];
 
   let activePlayer = players[0];
   let opponent = activePlayer === players[0] ? players[1] : players[0];
