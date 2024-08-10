@@ -27,6 +27,13 @@ header {
 }
 
 /* MAIN */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
 #status {
   background-color: var(--light-gray-colour);
   min-width: 12vw;
@@ -36,3 +43,9 @@ header {
 }
 
 /* MAIN - GRIDS */
+#grids {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 80%;
+}
