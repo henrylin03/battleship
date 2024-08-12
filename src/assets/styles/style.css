@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 :root {
-  --primary-colour: #0097ff;
-  --navy-colour: #142f4c;
-  --light-gray-colour: #f1f1e6;
+  --primary-colour: hsl(204, 100%, 50%);
+  --navy-colour: hsl(211, 58%, 19%);
+  --light-gray-colour: hsl(60, 28%, 92%);
+  --gray-colour: hsl(60, 28%, 80%);
 }
 
 * {
@@ -13,6 +14,7 @@
 }
 
 body {
+  padding: 15px;
   height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -31,7 +33,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 40px;
 }
 
 #status {
@@ -45,7 +47,35 @@ main {
 /* MAIN - GRIDS */
 #grids {
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 80%;
+  justify-content: space-around;
+  width: 75dvw;
+  --border: 1px solid var(--gray-colour);
 }
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.grid {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: var(--border);
+}
+
+.row {
+  width: 60vh;
+  display: flex;
+  flex: 1;
+}
+
+.square {
+  border: var(--border);
+  flex: 1;
+}
+
+/* start game button */
