@@ -5,6 +5,7 @@
   --navy-colour: hsl(211, 58%, 19%);
   --light-gray-colour: hsl(60, 28%, 92%);
   --gray-colour: hsl(60, 28%, 80%);
+  --ship-colour: hsl(211, 58%, 30%);
 }
 
 * {
@@ -76,6 +77,11 @@ main {
 .square {
   border: var(--border);
   flex: 1;
+}
+
+#your-grid .square.ship {
+  background-color: var(--ship-colour);
+  border-color: transparent;
 }
 
 /* start game button */

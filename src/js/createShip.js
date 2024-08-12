@@ -7,6 +7,8 @@ const createShip = (length) => {
 
   const hit = () => hitCount++;
   const isSunk = () => hitCount === length;
+
+  const getLength = () => length;
   const getCoordinates = () => coordinates;
 
   const setCoordinates = (start, isHorizontal) => {
@@ -31,7 +33,7 @@ const createShip = (length) => {
     }
   };
 
-  return { getCoordinates, hit, isSunk, setCoordinates };
+  return { getLength, getCoordinates, hit, isSunk, setCoordinates };
 };
 
 export default createShip;

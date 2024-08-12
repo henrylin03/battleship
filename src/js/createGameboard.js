@@ -11,6 +11,7 @@ const createGameboard = () => {
   const coordinatesWithShip = {};
   const misses = new Set();
 
+  const getCoordinatesWithShip = () => coordinatesWithShip;
   const getMisses = () => misses;
 
   const placeShip = (shipType, startCoordinates, isHorizontal) => {
@@ -48,7 +49,13 @@ const createGameboard = () => {
     return statuses.every((s) => s);
   };
 
-  return { allShipsSunk, getMisses, placeShip, receiveAttack };
+  return {
+    allShipsSunk,
+    getCoordinatesWithShip,
+    getMisses,
+    placeShip,
+    receiveAttack,
+  };
 };
 
 export default createGameboard;
