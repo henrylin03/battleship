@@ -12,11 +12,10 @@ const placeHumanPlayersShips = () => {
   const ships = players[0].board.getShips();
 
   for (const shipType in ships) {
-    let isHorizontal = generateRandomBoolean();
     let startCoordinates = generateRandomCoordinates();
-
+    let isHorizontal = generateRandomBoolean();
     const coordinatesWithShipHashmap =
-      players[0].board.getCoordinatesWithShip();
+      players[0].board.getAllCoordinatesWithShip();
 
     while (JSON.stringify(startCoordinates) in coordinatesWithShipHashmap)
       startCoordinates = generateRandomCoordinates();
@@ -24,14 +23,13 @@ const placeHumanPlayersShips = () => {
     players[0].board.placeShip(shipType, startCoordinates, isHorizontal);
   }
 
-  return players[0].board.getCoordinatesWithShip();
+  return players[0].board.getAllCoordinatesWithShip();
 };
 
 const createGameController = () => {
   const humanPlayerShipCoordinates = Object.keys(placeHumanPlayersShips());
 
   const setup = () => {
-    // todo: will eventually need to pass the locations of ships to screenController, which should have a data-attribute to track location of ship
     //players to ensure all their ships are set - (both) - computer to just do random shit for now so long as they don't overlap (which is already being checked)
   };
 

@@ -12,21 +12,42 @@ const createGameboard = () => {
   const misses = new Set();
 
   const getShips = () => ships;
-  const getCoordinatesWithShip = () => coordinatesWithShip;
+  const getAllCoordinatesWithShip = () => coordinatesWithShip;
   const getMisses = () => misses;
 
   const placeShip = (shipType, startCoordinates, isHorizontal) => {
-    const ship = ships[shipType];
-    ship.setCoordinates(startCoordinates, isHorizontal);
+    const shipObject = ships[shipType];
+    const shipLength = shipObject.getLength();
+    const shipCoordinates = new Array(shipLength)
+      .fill()
+      .map(() => [...startCoordinates]);
 
-    const shipCoordinates = ship.getCoordinates();
-    shipCoordinates.forEach((coordinates) => {
-      const coordinatesStr = JSON.stringify(coordinates);
+    // if placing ship normally means its tail sticks out of the board, we flip it (still keeping its orientation)
+    const needToFlipShip = () => {
+      // if ship is horizontal, keep row index of coordinates arr (1st elem) steady, only changing column index (2nd elem)
+      const indexOfChangingCoordinate = isHorizontal ? 0 : 1;
+      const endCoordinatesOfShip = isHorizontal
+        ? startCoordinates[indexOfChangingCoordinate] + shipLength
+        : startCoordinates[indexOfChangingCoordinate] - shipLength;
 
-      if (coordinatesStr in coordinatesWithShip) return console.error("clash");
+      return endCoordinatesOfShip < 0 || endCoordinatesOfShip > 9;
+    };
 
-      coordinatesWithShip[coordinatesStr] = shipType;
-    });
+    for (let i = 1; i < shipLength; i++) {
+      if (isHorizontal)
+        shipCoordinates[i][0] = needToFlipShip()
+          ? shipCoordinates[i - 1][0] - 1
+          : shipCoordinates[i - 1][0] + 1;
+      else
+        shipCoordinates[i][1] = needToFlipShip()
+          ? shipCoordinates[i - 1][1] + 1
+          : shipCoordinates[i - 1][1] - 1;
+    }
+
+    shipCoordinates.forEach(
+      (coordinates) =>
+        (coordinatesWithShip[JSON.stringify(coordinates)] = shipType),
+    );
   };
 
   const receiveAttack = (coordinates) => {
@@ -43,13 +64,12 @@ const createGameboard = () => {
   const allShipsSunk = () => {
     const statuses = [];
     for (const shipType in ships) statuses.push(ships[shipType].isSunk());
-
     return statuses.every((s) => s);
   };
 
   return {
     allShipsSunk,
-    getCoordinatesWithShip,
+    getAllCoordinatesWithShip,
     getMisses,
     getShips,
     placeShip,
