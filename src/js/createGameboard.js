@@ -11,6 +11,7 @@ const createGameboard = () => {
   const coordinatesWithShip = {};
   const misses = new Set();
 
+  const getShips = () => ships;
   const getCoordinatesWithShip = () => coordinatesWithShip;
   const getMisses = () => misses;
 
@@ -22,10 +23,7 @@ const createGameboard = () => {
     shipCoordinates.forEach((coordinates) => {
       const coordinatesStr = JSON.stringify(coordinates);
 
-      if (coordinatesStr in coordinatesWithShip)
-        throw new Error(
-          "There is already a ship there. Please place ship in another array of coordinates.",
-        );
+      if (coordinatesStr in coordinatesWithShip) return console.error("clash");
 
       coordinatesWithShip[coordinatesStr] = shipType;
     });
@@ -53,6 +51,7 @@ const createGameboard = () => {
     allShipsSunk,
     getCoordinatesWithShip,
     getMisses,
+    getShips,
     placeShip,
     receiveAttack,
   };

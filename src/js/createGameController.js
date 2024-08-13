@@ -1,4 +1,5 @@
 import createPlayer from "./createPlayer";
+import { generateRandomBoolean, generateRandomCoordinates } from "./helpers";
 
 const players = [createPlayer(), createPlayer(true)];
 
@@ -8,26 +9,21 @@ const players = [createPlayer(), createPlayer(true)];
 
 // returns coordinates object of all the ships
 const placeHumanPlayersShips = () => {
-  const humanBoard = players[0].board;
+  const ships = players[0].board.getShips();
 
-  // copies wireframe
-  humanBoard.placeShip("carrier", [0, 9], true);
-  humanBoard.placeShip("battleship", [8, 8], false);
-  humanBoard.placeShip("destroyer", [2, 7], false);
-  humanBoard.placeShip("submarine", [4, 4], true);
-  humanBoard.placeShip("patrolBoat", [1, 2], false);
+  for (const shipType in ships) {
+    let isHorizontal = generateRandomBoolean();
+    let startCoordinates = generateRandomCoordinates();
 
-  // for (const shipType in ships) {
-  //   const coordinatesWithShip = humanPlayer.board.getCoordinatesWithShip();
-  //   let startCoordinates = generateRandomCoordinates();
-  //   let isHorizontal = generateRandomBoolean();
+    const coordinatesWithShipHashmap =
+      players[0].board.getCoordinatesWithShip();
 
-  //   while (startCoordinates in coordinatesWithShip)
-  //     startCoordinates = generateRandomCoordinates();
+    while (JSON.stringify(startCoordinates) in coordinatesWithShipHashmap)
+      startCoordinates = generateRandomCoordinates();
 
-  //   humanPlayer.board.placeShip(shipType, startCoordinates, isHorizontal);
+    players[0].board.placeShip(shipType, startCoordinates, isHorizontal);
+  }
 
-  // }
   return players[0].board.getCoordinatesWithShip();
 };
 
