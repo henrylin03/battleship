@@ -18,7 +18,12 @@ const createGameboard = () => {
       .fill()
       .map(() => [...startCoordinates]);
 
-    // if placing ship normally means its tail sticks out of the board, we flip it (still keeping its orientation)
+    const isClashing = () =>
+      shipCoordinates.some((coordinates) =>
+        Object.keys(coordinatesWithShip).includes(JSON.stringify(coordinates)),
+      );
+
+    // if placing ship means its tail sticks out of gameboard, we flip it (still keeping its orientation)
     const needToFlipShip = () => {
       // if ship is horizontal, keep row index of coordinates arr (1st elem) steady, only changing column index (2nd elem)
       const indexOfChangingCoordinate = isHorizontal ? 0 : 1;
@@ -29,7 +34,8 @@ const createGameboard = () => {
       return endCoordinatesOfShip < 0 || endCoordinatesOfShip > 9;
     };
 
-    for (let i = 1; i < shipLength; i++) {
+    // 1st coordinate (elem 0) is startCoordinates, already prepopulated
+    for (let i = 1; i < shipCoordinates.length; i++) {
       if (isHorizontal)
         shipCoordinates[i][0] = needToFlipShip()
           ? shipCoordinates[i - 1][0] - 1
@@ -40,10 +46,30 @@ const createGameboard = () => {
           : shipCoordinates[i - 1][1] - 1;
     }
 
+    if (isClashing())
+      throw new Error(
+        `The current ship, ${shipType}, is colliding with 1+ other ships`,
+      );
+
     shipCoordinates.forEach(
       (coordinates) =>
         (coordinatesWithShip[JSON.stringify(coordinates)] = shipType),
     );
+
+    // const coordinatesString = JSON.stringify(shipCoordinates[i]);
+    // console.log(coordinatesString);
+    // if (coordinatesString in coordinatesWithShip) {
+    //   console.error(
+    //     `There is already a ${coordinatesWithShip[coordinatesString]} at ${coordinatesString}`,
+    //   );
+    //   throw new Error(
+    //     `There is already a ${coordinatesWithShip[coordinatesString]} at ${coordinatesString}`,
+    //   );
+    // } else seenCoordinates.add(coordinatesString);
+
+    // seenCoordinates.forEach(
+    //   (coordinates) => (coordinatesWithShip[coordinates] = shipType),
+    // );
   };
 
   const receiveAttack = (coordinates) => {

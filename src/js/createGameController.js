@@ -9,25 +9,57 @@ const players = [createPlayer(), createPlayer(true)];
 
 // returns coordinates object of all the ships
 const placeHumanPlayersShips = () => {
-  const ships = players[0].board.getShips();
+  const humanPlayerBoard = players[0].board;
+  const ships = humanPlayerBoard.getShips();
+
+  // const adjacentSquareHasShip = (coordinates) => {
+  //   const coordinatesWithShip = Object.keys(
+  //     humanPlayerBoard.getAllCoordinatesWithShip(),
+  //   );
+  //   const adjacentCoordinatesAsStrings = [];
+  //   // as strings to compare with coordinates that have a ship already, which are strings because they are keys of a hashmap
+
+  //   const potentialAdjacentCoordinates = [
+  //     [coordinates[0] + 1, coordinates[1]],
+  //     [coordinates[0] + 1, coordinates[1] + 1],
+  //     [coordinates[0] + 1, coordinates[1] - 1],
+  //     [coordinates[0], coordinates[1] + 1],
+  //     [coordinates[0], coordinates[1] - 1],
+  //     [coordinates[0] - 1, coordinates[1]],
+  //     [coordinates[0] - 1, coordinates[1] + 1],
+  //     [coordinates[0] - 1, coordinates[1] - 1],
+  //   ];
+
+  //   potentialAdjacentCoordinates.forEach((potentialAdjacentCoordinate) => {
+  //     if (potentialAdjacentCoordinate.some((c) => c < 0 || c > 9)) return;
+  //     adjacentCoordinates.push(c);
+  //   });
+
+  //   return coordinatesWithShip.some((c) =>
+  //     adjacentCoordinatesAsStrings.includes(c),
+  //   );
+  // };
 
   for (const shipType in ships) {
     let startCoordinates = generateRandomCoordinates();
     let isHorizontal = generateRandomBoolean();
-    const coordinatesWithShipHashmap =
-      players[0].board.getAllCoordinatesWithShip();
 
-    while (JSON.stringify(startCoordinates) in coordinatesWithShipHashmap)
-      startCoordinates = generateRandomCoordinates();
-
-    players[0].board.placeShip(shipType, startCoordinates, isHorizontal);
+    while (true) {
+      try {
+        humanPlayerBoard.placeShip(shipType, startCoordinates, isHorizontal);
+        break;
+      } catch (error) {
+        startCoordinates = generateRandomCoordinates();
+        isHorizontal = generateRandomBoolean();
+      }
+    }
   }
 
-  return players[0].board.getAllCoordinatesWithShip();
+  return humanPlayerBoard.getAllCoordinatesWithShip();
 };
 
 const createGameController = () => {
-  const humanPlayerShipCoordinates = Object.keys(placeHumanPlayersShips());
+  const humanShipCoordinatesObject = placeHumanPlayersShips();
 
   const setup = () => {
     //players to ensure all their ships are set - (both) - computer to just do random shit for now so long as they don't overlap (which is already being checked)
@@ -52,7 +84,7 @@ const createGameController = () => {
 
   //TODO: set up behaviour of computer (for now, might just randomly attack - we can make it smarter later i guess)
 
-  return { humanPlayerShipCoordinates, play, setup };
+  return { humanShipCoordinatesObject, play };
 };
 
 export default createGameController;

@@ -43,13 +43,15 @@ const createGrids = () => {
 };
 
 const displayHumanPlayersShips = () => {
-  const humanPlayerShipCoordinates = game.humanPlayerShipCoordinates;
+  const humanShipCoordinatesObject = game.humanShipCoordinatesObject;
   const humanPlayerGridSquaresArray = [
     ...document.querySelectorAll("#your-grid .square"),
   ];
 
-  humanPlayerShipCoordinates.forEach((coordinatesStr) => {
+  for (const coordinatesStr in humanShipCoordinatesObject) {
     const coordinates = JSON.parse(coordinatesStr);
+    const shipType = humanShipCoordinatesObject[coordinatesStr];
+
     const targetSquare = humanPlayerGridSquaresArray.find((squareDiv) => {
       return (
         squareDiv.dataset.column == coordinates[0] &&
@@ -57,7 +59,9 @@ const displayHumanPlayersShips = () => {
       );
     });
     targetSquare.classList.add("ship");
-  });
+    targetSquare.setAttribute("data-ship", shipType);
+    targetSquare.textContent = shipType.charAt(0);
+  }
 };
 
 const createScreenController = () => {
