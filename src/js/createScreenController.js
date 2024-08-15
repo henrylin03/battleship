@@ -43,10 +43,10 @@ const createGrids = () => {
 };
 
 const displayHumanPlayersShips = () => {
-  const humanShipCoordinatesObject = game.humanShipCoordinatesObject;
   const humanPlayerGridSquaresArray = [
     ...document.querySelectorAll("#your-grid .square"),
   ];
+  const humanShipCoordinatesObject = game.getHumanShipCoordinatesObject();
 
   for (const coordinatesStr in humanShipCoordinatesObject) {
     const coordinates = JSON.parse(coordinatesStr);
