@@ -55,21 +55,6 @@ const createGameboard = () => {
       (coordinates) =>
         (coordinatesWithShip[JSON.stringify(coordinates)] = shipType),
     );
-
-    // const coordinatesString = JSON.stringify(shipCoordinates[i]);
-    // console.log(coordinatesString);
-    // if (coordinatesString in coordinatesWithShip) {
-    //   console.error(
-    //     `There is already a ${coordinatesWithShip[coordinatesString]} at ${coordinatesString}`,
-    //   );
-    //   throw new Error(
-    //     `There is already a ${coordinatesWithShip[coordinatesString]} at ${coordinatesString}`,
-    //   );
-    // } else seenCoordinates.add(coordinatesString);
-
-    // seenCoordinates.forEach(
-    //   (coordinates) => (coordinatesWithShip[coordinates] = shipType),
-    // );
   };
 
   const receiveAttack = (coordinates) => {
@@ -79,14 +64,13 @@ const createGameboard = () => {
       const shipType = coordinatesWithShip[coordinatesStr];
       ships[shipType].hit();
     } else misses.add(coordinatesStr);
-
-    // todo: you cannot attack coordinates that have either been misses or hit
   };
 
   const allShipsSunk = () => {
-    const statuses = [];
-    for (const shipType in ships) statuses.push(ships[shipType].isSunk());
-    return statuses.every((s) => s);
+    const shipObjectsArray = Object.values(ships);
+    for (let i = 0; i < shipObjectsArray.length; i++)
+      if (!shipObjectsArray[i].isSunk()) return false;
+    return true;
   };
 
   return {
