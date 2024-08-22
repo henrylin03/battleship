@@ -26,7 +26,7 @@ const createPlayer = (isComputer = false) => {
 
   randomlyPlaceShips();
 
-  return { name, board };
+  return { name, board, isComputer: () => isComputer };
 };
 
 export default createPlayer;
