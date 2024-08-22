@@ -79,23 +79,37 @@ const updateGrid = (printedBoard, gridElement) => {
   }
 };
 
-const updateGrids = () => {
-  // index in this array matches players array from gameController
-  const gridElements = [
-    document.querySelector("#your-grid"),
-    document.querySelector("#opponent-grid"),
-  ];
-  const players = game.getPlayers();
+const updateScreen = () => {
+  const updateGrids = () => {
+    // index in this array matches players array from gameController
+    const gridElements = [
+      document.querySelector("#your-grid"),
+      document.querySelector("#opponent-grid"),
+    ];
+    const players = game.getPlayers();
 
-  players.forEach((player, i) =>
-    updateGrid(player.board.printBoard(), gridElements[i]),
-  );
+    players.forEach((player, i) =>
+      updateGrid(player.board.printBoard(), gridElements[i]),
+    );
+  };
+
+  const updateActivePlayer = () => {
+    const statusElement = document.querySelector("#status");
+    const activePlayer = game.getActivePlayer();
+
+    statusElement.textContent = activePlayer.isComputer()
+      ? "Computer's turn to attack"
+      : "Your turn to attack!";
+  };
+
+  updateGrids();
+  updateActivePlayer();
 };
 
 const createScreenController = () => {
   /* SETUP */
   createGrids();
-  updateGrids();
+  updateScreen();
 
   const opponentGridSquares = document.querySelectorAll(
     "#opponent-grid .square",
@@ -109,9 +123,11 @@ const createScreenController = () => {
     [...opponentGridButtons].forEach((button) => (button.disabled = false));
 
   const handleClickOnOpponentsSquares = (e) => {
+    if (game.getActivePlayer().isComputer()) return;
+
     const square = e.currentTarget;
-    game.playRound(square.dataset.column, square.dataset.row);
-    updateGrids();
+    game.attackByHumanPlayer(square.dataset.column, square.dataset.row);
+    updateScreen();
   };
 
   /* EVENT LISTENERS */
