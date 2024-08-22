@@ -25,6 +25,10 @@ body {
   font-family: "Open Sans", Helvetica, sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 /* HEADER */
 header {
   padding: 15px 5px;
@@ -79,7 +83,6 @@ main {
 .square {
   border: var(--border);
   flex: 1;
-  cursor: pointer;
 }
 
 .square.ship {
