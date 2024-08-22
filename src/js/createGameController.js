@@ -11,7 +11,6 @@ const createGameController = () => {
   const switchPlayers = () =>
     (activePlayer = activePlayer === players[0] ? players[1] : players[0]);
 
-  //todo: winning conditions
   const activePlayerWins = () => {
     const MIN_ROUNDS_TO_WIN = 5 + 4 + 3 + 3 + 2; // length of all the ships summed
 
@@ -36,24 +35,14 @@ const createGameController = () => {
     printNewRound();
   };
 
-  // if active player is the computer, then randomly throw attacks
-
-  // const playRound = (columnIndex, rowIndex) => {
-  //   const coordinates = [Number(columnIndex), Number(rowIndex)];
-
-  //   const isHit = opponentPlayer.board.receiveAttack(coordinates);
-
-  //   // 3 - if it is hit, manage hit behaviour. otherwise record as being missed. it is still that player's turn until they miss.
-  //   // 4 - change players
-  //   // 5 - accept attack from that player and manage whether hit or not
-  //   switchPlayers();
-  //   printNewRound();
-  // };
-
   // run on initialisation
   printNewRound();
 
-  return { getPlayers: () => players, playRound };
+  return {
+    getActivePlayer: () => activePlayer,
+    getPlayers: () => players,
+    playRound,
+  };
 };
 
 export default createGameController;
