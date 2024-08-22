@@ -1,25 +1,37 @@
 import createPlayer from "../js/createPlayer";
 
-describe("The computer's ship have been properly placed", () => {
-  test("Total number of coordinates of computers' ships is 17", () => {
-    const SQUARES_WITH_SHIP = 5 + 4 + 3 + 3 + 2;
-    const player = createPlayer(true);
-    const coordinatesWithShipObject = player.board.getAllCoordinatesWithShip();
+test("There are no clashes if the total number of gameboard coordinates taken up by computers' ships is 17", () => {
+  const EXPECTED_COUNT_OF_SQUARES_WITH_SHIPS = 5 + 4 + 3 + 3 + 2;
+  const player = createPlayer(true);
+  const boardArray = player.board.getBoard();
 
-    expect(Object.keys(coordinatesWithShipObject).length).toBe(
-      SQUARES_WITH_SHIP,
-    );
-  });
+  let countOfCoordinatesWithShip = 0;
+  boardArray.forEach((row) =>
+    row.forEach((square) => {
+      if (square.shipType()) countOfCoordinatesWithShip++;
+    }),
+  );
 
-  test("Only valid ships are in computer's game board", () => {
-    const player = createPlayer(true);
-    const coordinatesWithShipObject = player.board.getAllCoordinatesWithShip();
+  expect(countOfCoordinatesWithShip).toEqual(
+    EXPECTED_COUNT_OF_SQUARES_WITH_SHIPS,
+  );
+});
 
-    const validShipNames = Object.keys(player.board.getShips());
-    const shipsOnComputersBoard = Object.values(coordinatesWithShipObject);
+test("Only valid ship types are on computer's game board", () => {
+  const player = createPlayer(true);
+  const boardArray = player.board.getBoard();
+  const validShipTypes = Object.keys(player.board.getShips());
+  const shipTypesOnBoard = new Set();
 
-    shipsOnComputersBoard.forEach((shipType) => {
-      expect(validShipNames.includes(shipType));
-    });
-  });
+  boardArray.forEach((row) =>
+    row.forEach((square) => {
+      const shipType = square.shipType();
+      if (!shipType || shipTypesOnBoard.has(shipType)) return;
+      shipTypesOnBoard.add(shipType);
+    }),
+  );
+
+  shipTypesOnBoard.forEach((shipType) =>
+    expect(validShipTypes.includes(shipType)),
+  );
 });

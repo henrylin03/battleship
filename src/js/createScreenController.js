@@ -5,11 +5,9 @@ const game = createGameController();
 const createGrids = () => {
   const SQUARES_PER_SIDE = 10;
   const grids = document.querySelectorAll(".grid");
+  const isOpponentsGrid = (gridElement) => gridElement.id === "opponent-grid";
 
   [...grids].forEach((container) => {
-    // delete existing grid, if any
-    container.replaceChildren();
-
     const row = document.createElement("div");
     row.classList.add("row");
     container.appendChild(row);
@@ -21,8 +19,17 @@ const createGrids = () => {
     while (columnIndex <= SQUARES_PER_SIDE - 1) {
       const square = document.createElement("div");
       square.classList.add("square");
-      square.setAttribute("data-row", rowIndex);
       square.setAttribute("data-column", columnIndex);
+      square.setAttribute("data-row", rowIndex);
+
+      if (isOpponentsGrid(container)) {
+        const button = document.createElement("button");
+        button.setAttribute("type", "button");
+        button.classList.add("grid-button");
+        // button.disabled = true;
+
+        square.appendChild(button);
+      }
 
       row.appendChild(square);
       columnIndex++;
@@ -42,41 +49,79 @@ const createGrids = () => {
   });
 };
 
-const displayHumanPlayersShips = () => {
-  const humanPlayerGridSquaresArray = [
-    ...document.querySelectorAll("#your-grid .square"),
-  ];
-  const humanShipCoordinatesObject = game.getHumanShipCoordinatesObject();
+const updateGrid = (printedBoard, gridElement) => {
+  const squaresDomElements = [...gridElement.querySelectorAll(".square")];
+  const isPlayerGrid = () => gridElement.id === "your-grid";
 
-  for (const coordinatesStr in humanShipCoordinatesObject) {
-    const coordinates = JSON.parse(coordinatesStr);
-    const shipType = humanShipCoordinatesObject[coordinatesStr];
+  for (let rowIndex = 0; rowIndex < printedBoard.length; rowIndex++) {
+    for (
+      let columnIndex = 0;
+      columnIndex < printedBoard[rowIndex].length;
+      columnIndex++
+    ) {
+      const squareObject = printedBoard[columnIndex][rowIndex];
 
-    const targetSquare = humanPlayerGridSquaresArray.find((squareDiv) => {
-      return (
-        squareDiv.dataset.column == coordinates[0] &&
-        squareDiv.dataset.row == coordinates[1]
+      const squareDomElement = squaresDomElements.find(
+        (s) => s.dataset.column == columnIndex && s.dataset.row == rowIndex,
       );
-    });
-    targetSquare.classList.add("ship");
-    targetSquare.setAttribute("data-ship", shipType);
-    targetSquare.textContent = shipType.charAt(0);
+
+      // display ships
+      if (isPlayerGrid() && squareObject.shipType) {
+        squareDomElement.classList.add("ship");
+        squareDomElement.setAttribute("data-ship", squareObject.shipType);
+      }
+
+      // display hits and misses
+      if (!squareObject.attacked) continue;
+      if (squareObject.shipType) squareDomElement.classList.add("hit");
+      else squareDomElement.classList.add("miss");
+    }
   }
 };
 
-const createScreenController = () => {
-  const startGameBtn = document.querySelector("#start-btn");
+const updateGrids = () => {
+  // index in this array matches players array from gameController
+  const gridElements = [
+    document.querySelector("#your-grid"),
+    document.querySelector("#opponent-grid"),
+  ];
+  const players = game.getPlayers();
 
-  // method: update the screen after every turn
-  const updateScreen = () => {
-    // if opponent is computer, then their screen is always hidden, other than white pins (misses) vs red pins (hit)
-    // on your own screen, you can see your ships' locations once game begins
-    return;
+  players.forEach((player, i) =>
+    updateGrid(player.board.printBoard(), gridElements[i]),
+  );
+};
+
+const createScreenController = () => {
+  /* SETUP */
+  createGrids();
+  updateGrids();
+
+  const opponentGridSquares = document.querySelectorAll(
+    "#opponent-grid .square",
+  );
+  const opponentGridButtons = document.querySelectorAll(".grid-button");
+  const startGameButton = document.querySelector("#start-button");
+
+  /* EVENT HANDLERS */
+  const handleStartGame = () =>
+    // opponent's squares become clickable
+    [...opponentGridButtons].forEach((button) => (button.disabled = false));
+
+  const handleClickOnOpponentsSquares = (e) => {
+    const square = e.currentTarget;
+    game.playRound(square.dataset.column, square.dataset.row);
+    updateGrids();
   };
 
-  createGrids(); // todo? can we merge with display human players ships or is that not good idea despite efficiency??
-  displayHumanPlayersShips();
-  startGameBtn.addEventListener("mousedown", game.play());
+  /* EVENT LISTENERS */
+  startGameButton.addEventListener("mousedown", handleStartGame, {
+    once: true,
+  });
+
+  [...opponentGridSquares].forEach((square) =>
+    square.addEventListener("mousedown", handleClickOnOpponentsSquares),
+  );
 };
 
 export default createScreenController;

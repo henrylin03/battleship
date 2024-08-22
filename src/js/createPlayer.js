@@ -3,6 +3,7 @@ import { generateRandomBoolean, generateRandomCoordinates } from "./helpers";
 
 const createPlayer = (isComputer = false) => {
   const board = createGameboard();
+  const name = isComputer ? "computer" : "playerOne";
 
   const randomlyPlaceShips = () => {
     const ships = board.getShips();
@@ -25,7 +26,7 @@ const createPlayer = (isComputer = false) => {
 
   randomlyPlaceShips();
 
-  return { board };
+  return { name, board };
 };
 
 export default createPlayer;

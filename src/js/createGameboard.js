@@ -1,4 +1,5 @@
 import createShip from "./createShip";
+import createSquare from "./createSquare";
 
 const createGameboard = () => {
   const ships = {
@@ -8,8 +9,14 @@ const createGameboard = () => {
     submarine: createShip(3),
     patrolBoat: createShip(2),
   };
-  const coordinatesWithShip = {};
-  const misses = new Set();
+
+  const board = Array.from({ length: 10 }, () =>
+    Array.from({ length: 10 }, () => createSquare()),
+  );
+
+  // ? not sure if we actually need this tbh
+  const printBoard = () =>
+    board.map((row) => row.map((square) => square.view()));
 
   const placeShip = (shipType, startCoordinates, isHorizontal) => {
     const shipObject = ships[shipType];
@@ -19,9 +26,10 @@ const createGameboard = () => {
       .map(() => [...startCoordinates]);
 
     const isClashing = () =>
-      shipCoordinates.some((coordinates) =>
-        Object.keys(coordinatesWithShip).includes(JSON.stringify(coordinates)),
-      );
+      shipCoordinates.some((coordinates) => {
+        const square = board[coordinates[0]][coordinates[1]];
+        return square.shipType() !== null;
+      });
 
     // if placing ship means its tail sticks out of gameboard, we flip it (still keeping its orientation)
     const needToFlipShip = () => {
@@ -51,34 +59,40 @@ const createGameboard = () => {
         `The current ship, ${shipType}, is colliding with 1+ other ships`,
       );
 
-    shipCoordinates.forEach(
-      (coordinates) =>
-        (coordinatesWithShip[JSON.stringify(coordinates)] = shipType),
-    );
+    shipCoordinates.forEach((coordinates) => {
+      const square = board[coordinates[0]][coordinates[1]];
+      square.setShipType(shipType);
+    });
   };
 
+  // returns true if hit, false if miss
   const receiveAttack = (coordinates) => {
-    const coordinatesStr = JSON.stringify(coordinates);
+    const square = board[coordinates[0]][coordinates[1]];
 
-    if (coordinatesStr in coordinatesWithShip) {
-      const shipType = coordinatesWithShip[coordinatesStr];
-      ships[shipType].hit();
-    } else misses.add(coordinatesStr);
+    if (square.attacked()) return null;
+    square.receiveAttack();
+
+    if (square.shipType()) {
+      ships[square.shipType()].hit();
+      return true;
+    }
+
+    return false;
   };
 
   const allShipsSunk = () => {
-    const shipObjectsArray = Object.values(ships);
-    for (let i = 0; i < shipObjectsArray.length; i++)
-      if (!shipObjectsArray[i].isSunk()) return false;
-    return true;
+    const statuses = Object.values(ships).map((shipObject) =>
+      shipObject.isSunk(),
+    );
+    return statuses.every((s) => s);
   };
 
   return {
     allShipsSunk,
+    getBoard: () => board,
     getShips: () => ships,
-    getAllCoordinatesWithShip: () => coordinatesWithShip,
-    getMisses: () => misses,
     placeShip,
+    printBoard,
     receiveAttack,
   };
 };

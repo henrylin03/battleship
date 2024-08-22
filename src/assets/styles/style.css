@@ -6,6 +6,8 @@
   --light-gray-colour: hsl(60, 28%, 92%);
   --gray-colour: hsl(60, 28%, 80%);
   --ship-colour: hsl(211, 58%, 30%);
+  --miss-color: hsl(218, 15%, 25%);
+  --hit-color: #febe3f;
 }
 
 * {
@@ -77,15 +79,38 @@ main {
 .square {
   border: var(--border);
   flex: 1;
+  cursor: pointer;
 }
 
-#your-grid .square.ship {
+.square.ship {
   background-color: var(--ship-colour);
   border-color: transparent;
 }
 
+.square.hit {
+  background-color: var(--hit-color);
+}
+
+.square.miss {
+  background-color: var(--miss-color);
+}
+
+.grid-button {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  --hover-colour: hsl(60, 20%, 95%);
+  --click-colour: hsl(60, 50%, 80%);
+}
+
+.hit .grid-button:hover,
+.miss .grid-button:hover {
+  background-color: inherit;
+}
+
 /* start game button */
-button {
+#start-button {
   background-color: var(--primary-colour);
   color: white;
   min-width: 8vw;
@@ -96,11 +121,11 @@ button {
   --primary-colour-darker: hsl(204, 95%, 48%);
 }
 
-button:hover {
+#start-button:hover {
   background-color: var(--primary-colour-lighter);
   transition: background-color 0.12s;
 }
 
-button:active {
+#start-button:active {
   background-color: var(--primary-colour-darker);
 }
