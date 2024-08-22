@@ -123,8 +123,10 @@ const createScreenController = () => {
     [...opponentGridButtons].forEach((button) => (button.disabled = false));
 
   const handleClickOnOpponentsSquares = (e) => {
+    if (game.getActivePlayer().isComputer()) return;
+
     const square = e.currentTarget;
-    game.playRound(square.dataset.column, square.dataset.row);
+    game.attackByHumanPlayer(square.dataset.column, square.dataset.row);
     updateScreen();
   };
 
