@@ -1,5 +1,6 @@
 import createGameController from "./createGameController";
 
+const opponentGridButtons = document.querySelectorAll(".grid-button");
 const game = createGameController();
 
 const createGrids = () => {
@@ -102,7 +103,16 @@ const updateScreen = () => {
       : "Your turn to attack!";
   };
 
+  // run
   updateGrids();
+
+  if (game.activePlayerWins()) {
+    const activePlayer = game.getActivePlayer();
+    const alertText = activePlayer.isComputer() ? "Computer wins" : "You win";
+
+    return alert(alertText);
+  }
+
   updateActivePlayer();
 };
 
@@ -114,7 +124,6 @@ const createScreenController = () => {
   const opponentGridSquares = document.querySelectorAll(
     "#opponent-grid .square",
   );
-  const opponentGridButtons = document.querySelectorAll(".grid-button");
   const startGameButton = document.querySelector("#start-button");
 
   /* EVENT HANDLERS */
@@ -127,6 +136,7 @@ const createScreenController = () => {
 
     const square = e.currentTarget;
     game.attackByHumanPlayer(square.dataset.column, square.dataset.row);
+
     updateScreen();
   };
 

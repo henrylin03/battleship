@@ -3,14 +3,17 @@ import { generateRandomCoordinates } from "./helpers";
 
 const players = [createPlayer(), createPlayer(true)];
 
-const printNewRound = () => players.map((player) => player.board.printBoard());
-
 const createGameController = () => {
   let activePlayer = players[0];
   const switchPlayers = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
 
     if (activePlayer.isComputer()) attackByComputer();
+  };
+
+  const activePlayerWins = () => {
+    const otherPlayer = activePlayer === players[0] ? players[1] : players[0];
+    return otherPlayer.board.allShipsSunk();
   };
 
   const attackByHumanPlayer = (columnIndex = "", rowIndex = "") => {
@@ -29,10 +32,8 @@ const createGameController = () => {
     }
   };
 
-  // run on initialisation
-  printNewRound();
-
   return {
+    activePlayerWins,
     attackByHumanPlayer,
     getActivePlayer: () => activePlayer,
     getPlayers: () => players,
