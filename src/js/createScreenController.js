@@ -35,7 +35,6 @@ const createGrids = () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
         button.classList.add("grid-button");
-        // button.disabled = true;
 
         square.appendChild(button);
       }
@@ -107,15 +106,6 @@ function updateScreen() {
     );
   };
 
-  const updateActivePlayer = () => {
-    const statusElement = document.querySelector("#status");
-    const activePlayer = game.getActivePlayer();
-
-    statusElement.textContent = activePlayer.isComputer()
-      ? "Computer's turn to attack"
-      : "Your turn to attack!";
-  };
-
   const disableClicksOnOpponentsBoard = () => {
     [...opponentGridButtons].forEach((button) => (button.disabled = true));
     [...opponentGridSquares].forEach((square) =>
@@ -127,15 +117,13 @@ function updateScreen() {
   updateGrids();
 
   if (game.activePlayerWins()) {
+    disableClicksOnOpponentsBoard();
+
     const activePlayer = game.getActivePlayer();
     const alertText = activePlayer.isComputer() ? "Computer wins" : "You win";
 
-    disableClicksOnOpponentsBoard();
-
     return alert(alertText);
   }
-
-  updateActivePlayer();
 }
 
 const createScreenController = () => {
@@ -147,18 +135,8 @@ const createScreenController = () => {
   const opponentGridSquares = document.querySelectorAll(
     "#opponent-grid .square",
   );
-  const startGameButton = document.querySelector("#start-button");
-
-  /* EVENT HANDLERS */
-  const handleStartGame = () =>
-    // opponent's squares become clickable
-    [...opponentGridButtons].forEach((button) => (button.disabled = false));
 
   /* EVENT LISTENERS */
-  startGameButton.addEventListener("mousedown", handleStartGame, {
-    once: true,
-  });
-
   [...opponentGridSquares].forEach((square) =>
     square.addEventListener("mousedown", handleClickOnOpponentsSquares),
   );
