@@ -1,7 +1,15 @@
 import createGameController from "./createGameController";
 
-const opponentGridButtons = document.querySelectorAll(".grid-button");
 const game = createGameController();
+
+const handleClickOnOpponentsSquares = (e) => {
+  if (game.getActivePlayer().isComputer()) return;
+
+  const square = e.currentTarget;
+  game.attackByHumanPlayer(square.dataset.column, square.dataset.row);
+
+  updateScreen();
+};
 
 const createGrids = () => {
   const SQUARES_PER_SIDE = 10;
@@ -50,37 +58,42 @@ const createGrids = () => {
   });
 };
 
-const updateGrid = (printedBoard, gridElement) => {
-  const squaresDomElements = [...gridElement.querySelectorAll(".square")];
-  const isPlayerGrid = () => gridElement.id === "your-grid";
+function updateScreen() {
+  const opponentGridButtons = document.querySelectorAll(".grid-button");
+  const opponentGridSquares = document.querySelectorAll(
+    "#opponent-grid .square",
+  );
 
-  for (let rowIndex = 0; rowIndex < printedBoard.length; rowIndex++) {
-    for (
-      let columnIndex = 0;
-      columnIndex < printedBoard[rowIndex].length;
-      columnIndex++
-    ) {
-      const squareObject = printedBoard[columnIndex][rowIndex];
+  const updateGrid = (printedBoard, gridElement) => {
+    const squaresDomElements = [...gridElement.querySelectorAll(".square")];
+    const isPlayerGrid = () => gridElement.id === "your-grid";
 
-      const squareDomElement = squaresDomElements.find(
-        (s) => s.dataset.column == columnIndex && s.dataset.row == rowIndex,
-      );
+    for (let rowIndex = 0; rowIndex < printedBoard.length; rowIndex++) {
+      for (
+        let columnIndex = 0;
+        columnIndex < printedBoard[rowIndex].length;
+        columnIndex++
+      ) {
+        const squareObject = printedBoard[columnIndex][rowIndex];
 
-      // display ships
-      if (isPlayerGrid() && squareObject.shipType) {
-        squareDomElement.classList.add("ship");
-        squareDomElement.setAttribute("data-ship", squareObject.shipType);
+        const squareDomElement = squaresDomElements.find(
+          (s) => s.dataset.column == columnIndex && s.dataset.row == rowIndex,
+        );
+
+        // display ships
+        if (isPlayerGrid() && squareObject.shipType) {
+          squareDomElement.classList.add("ship");
+          squareDomElement.setAttribute("data-ship", squareObject.shipType);
+        }
+
+        // display hits and misses
+        if (!squareObject.attacked) continue;
+        if (squareObject.shipType) squareDomElement.classList.add("hit");
+        else squareDomElement.classList.add("miss");
       }
-
-      // display hits and misses
-      if (!squareObject.attacked) continue;
-      if (squareObject.shipType) squareDomElement.classList.add("hit");
-      else squareDomElement.classList.add("miss");
     }
-  }
-};
+  };
 
-const updateScreen = () => {
   const updateGrids = () => {
     // index in this array matches players array from gameController
     const gridElements = [
@@ -103,6 +116,13 @@ const updateScreen = () => {
       : "Your turn to attack!";
   };
 
+  const disableClicksOnOpponentsBoard = () => {
+    [...opponentGridButtons].forEach((button) => (button.disabled = true));
+    [...opponentGridSquares].forEach((square) =>
+      square.removeEventListener("mousedown", handleClickOnOpponentsSquares),
+    );
+  };
+
   // run
   updateGrids();
 
@@ -110,17 +130,20 @@ const updateScreen = () => {
     const activePlayer = game.getActivePlayer();
     const alertText = activePlayer.isComputer() ? "Computer wins" : "You win";
 
+    disableClicksOnOpponentsBoard();
+
     return alert(alertText);
   }
 
   updateActivePlayer();
-};
+}
 
 const createScreenController = () => {
   /* SETUP */
   createGrids();
   updateScreen();
 
+  const opponentGridButtons = document.querySelectorAll(".grid-button");
   const opponentGridSquares = document.querySelectorAll(
     "#opponent-grid .square",
   );
@@ -130,15 +153,6 @@ const createScreenController = () => {
   const handleStartGame = () =>
     // opponent's squares become clickable
     [...opponentGridButtons].forEach((button) => (button.disabled = false));
-
-  const handleClickOnOpponentsSquares = (e) => {
-    if (game.getActivePlayer().isComputer()) return;
-
-    const square = e.currentTarget;
-    game.attackByHumanPlayer(square.dataset.column, square.dataset.row);
-
-    updateScreen();
-  };
 
   /* EVENT LISTENERS */
   startGameButton.addEventListener("mousedown", handleStartGame, {
