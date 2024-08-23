@@ -35,6 +35,7 @@ const createGrids = () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
         button.classList.add("grid-button");
+        button.disabled = true;
 
         square.appendChild(button);
       }
@@ -131,14 +132,25 @@ const createScreenController = () => {
   createGrids();
   updateScreen();
 
-  const opponentGridButtons = document.querySelectorAll(".grid-button");
   const opponentGridSquares = document.querySelectorAll(
     "#opponent-grid .square",
   );
+  const opponentGridButtons = document.querySelectorAll(
+    "#opponent-grid .grid-button",
+  );
+  const startGameButton = document.querySelector("#start-button");
 
-  /* EVENT LISTENERS */
   [...opponentGridSquares].forEach((square) =>
     square.addEventListener("mousedown", handleClickOnOpponentsSquares),
+  );
+
+  startGameButton.addEventListener(
+    "mousedown",
+    (e) => {
+      opponentGridButtons.forEach((button) => (button.disabled = false));
+      e.target.disabled = true;
+    },
+    { once: true },
   );
 };
 

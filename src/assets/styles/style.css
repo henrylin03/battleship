@@ -6,7 +6,6 @@
   --light-gray-colour: hsl(60, 28%, 92%);
   --gray-colour: hsl(60, 28%, 80%);
   --ship-colour: hsl(211, 58%, 30%);
-  --miss-color: hsl(218, 15%, 25%);
   --hit-color: #febe3f;
 }
 
@@ -26,6 +25,10 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 /* HEADER */
 header {
   padding: 15px 5px;
@@ -36,6 +39,10 @@ header {
 /* MAIN - GRIDS */
 main {
   padding: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
 }
 
 #grids {
@@ -107,7 +114,6 @@ main {
 .hit .grid-button:hover,
 .miss .grid-button:hover {
   background-color: inherit;
-  cursor: default;
 }
 
 /* start game button */
@@ -117,16 +123,19 @@ main {
   min-width: 8vw;
   padding: 15px 5px;
   border-radius: 10px;
-  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.2);
   --primary-colour-lighter: hsl(204, 100%, 55%);
   --primary-colour-darker: hsl(204, 95%, 48%);
 }
 
-#start-button:hover {
+#start-button:enabled:hover {
   background-color: var(--primary-colour-lighter);
   transition: background-color 0.12s;
 }
 
-#start-button:active {
+#start-button:enabled:active {
   background-color: var(--primary-colour-darker);
+}
+
+#start-button:disabled {
+  filter: saturate(0.25);
 }
