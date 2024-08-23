@@ -115,9 +115,11 @@ main {
   background-color: var(--click-colour);
 }
 
+.grid-button:disabled,
 .hit .grid-button:hover,
 .miss .grid-button:hover {
   background-color: inherit;
+  cursor: default;
 }
 
 /* start game button */
