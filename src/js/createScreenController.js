@@ -152,6 +152,7 @@ const createScreenController = () => {
   const handleClickOnRandomShipPlacement = () => {
     players[0].randomlyPlaceShips();
     updateScreen();
+    disableClicksOnOpponentsBoard();
   };
 
   randomiseShipsButton.addEventListener(
