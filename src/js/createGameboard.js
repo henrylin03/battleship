@@ -94,6 +94,7 @@ const createGameboard = () => {
       throw new Error(
         `The current ship, ${shipType}, is adjacent to 1+ other ships`,
       );
+
     if (isClashing())
       throw new Error(
         `The current ship, ${shipType}, is colliding with 1+ other ships`,
