@@ -9,7 +9,8 @@
     "test": "jest",
     "pretty": "npx prettier . --write",
     "pretty-check": "npx prettier . --check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "gh-deploy": "git subtree push --prefix dist origin gh-pages"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
