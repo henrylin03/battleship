@@ -13,12 +13,13 @@ const createGameController = () => {
 
   const activePlayerWins = () => {
     const otherPlayer = activePlayer === players[0] ? players[1] : players[0];
-    return otherPlayer.board.allShipsSunk();
+    return otherPlayer.boardObject.allShipsSunk();
   };
 
   const attackByHumanPlayer = (columnIndex = "", rowIndex = "") => {
     const coordinates = [Number(columnIndex), Number(rowIndex)];
-    const computerHasBeenHit = players[1].board.receiveAttack(coordinates);
+    const computerHasBeenHit =
+      players[1].boardObject.receiveAttack(coordinates);
     if (computerHasBeenHit === false) switchPlayers();
   };
 
@@ -26,7 +27,7 @@ const createGameController = () => {
     while (activePlayer.isComputer()) {
       const randomCoordinates = generateRandomCoordinates();
       const computerHasHitYou =
-        players[0].board.receiveAttack(randomCoordinates);
+        players[0].boardObject.receiveAttack(randomCoordinates);
 
       if (computerHasHitYou === false) switchPlayers();
     }
@@ -36,7 +37,7 @@ const createGameController = () => {
     activePlayerWins,
     attackByHumanPlayer,
     getActivePlayer: () => activePlayer,
-    getPlayers: () => players,
+    players,
   };
 };
 

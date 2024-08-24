@@ -23,10 +23,15 @@ body {
 
 button {
   cursor: pointer;
+  transition: background-color 0.12s;
 }
 
 button:disabled {
   cursor: not-allowed;
+}
+
+button:enabled:active {
+  transform: scale(0.98);
 }
 
 /* HEADER */
@@ -36,21 +41,22 @@ header {
   text-align: center;
 }
 
-/* MAIN - GRIDS */
+/* MAIN */
 main {
   padding: 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 60px;
+  position: relative;
 }
 
+/* MAIN: grids */
 #grids {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   width: 75vw;
-  margin: 0 auto;
   --border: 1px solid var(--gray-colour);
 }
 
@@ -116,7 +122,35 @@ main {
   background-color: inherit;
 }
 
-/* start game button */
+/* MAIN: randomise ship positions button */
+#randomise-ships-button {
+  position: absolute;
+  top: 75%;
+  right: 90%;
+  color: var(--ship-colour);
+  border: 1px var(--ship-colour) solid;
+  border-radius: 20%;
+  padding: 4px 5px;
+}
+
+#randomise-ships-button:enabled {
+  background-color: white;
+}
+
+#randomise-ships-button:enabled:hover {
+  background-color: hsl(211, 58%, 95%);
+}
+
+#randomise-ships-button:enabled:active {
+  background-color: hsl(211, 58%, 90%);
+}
+
+#randomise-ships-button:disabled {
+  color: var(--gray-colour);
+  border-color: var(--gray-colour);
+}
+
+/* MAIN: start game button */
 #start-button {
   background-color: var(--primary-colour);
   color: white;
@@ -129,7 +163,6 @@ main {
 
 #start-button:enabled:hover {
   background-color: var(--primary-colour-lighter);
-  transition: background-color 0.12s;
 }
 
 #start-button:enabled:active {

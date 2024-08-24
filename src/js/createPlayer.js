@@ -2,10 +2,11 @@ import createGameboard from "./createGameboard";
 import { generateRandomBoolean, generateRandomCoordinates } from "./helpers";
 
 const createPlayer = (isComputer = false) => {
-  const board = createGameboard();
+  const boardObject = createGameboard();
 
   const randomlyPlaceShips = () => {
-    const ships = board.getShips();
+    boardObject.reset();
+    const ships = boardObject.getShips();
 
     for (const shipType in ships) {
       let startCoordinates = generateRandomCoordinates();
@@ -13,7 +14,7 @@ const createPlayer = (isComputer = false) => {
 
       while (true) {
         try {
-          board.placeShip(shipType, startCoordinates, isHorizontal);
+          boardObject.placeShip(shipType, startCoordinates, isHorizontal);
           break;
         } catch (error) {
           startCoordinates = generateRandomCoordinates();
@@ -25,7 +26,7 @@ const createPlayer = (isComputer = false) => {
 
   randomlyPlaceShips();
 
-  return { board, isComputer: () => isComputer };
+  return { boardObject, isComputer: () => isComputer, randomlyPlaceShips };
 };
 
 export default createPlayer;

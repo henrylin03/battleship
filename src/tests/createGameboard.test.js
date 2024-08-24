@@ -46,10 +46,10 @@ test("Missed shots are recorded on gameboard", () => {
   const COORDINATES = [9, 9];
   gameboard.receiveAttack(COORDINATES);
 
-  const missedSquare = gameboard.getBoard()[COORDINATES[0]][COORDINATES[1]];
+  const missedSquare = gameboard.printBoard()[COORDINATES[0]][COORDINATES[1]];
 
-  expect(missedSquare.shipType()).toBeNull();
-  expect(missedSquare.attacked()).toBe(true);
+  expect(missedSquare.shipType).toBeNull();
+  expect(missedSquare.attacked).toBe(true);
 });
 
 describe("Check all ships have been sunk", () => {
@@ -89,4 +89,22 @@ describe("Check all ships have been sunk", () => {
 
     expect(gameboard.allShipsSunk()).toBe(true);
   });
+});
+
+test("Resetting the board causes the board to be blank again", () => {
+  const gameboard = createGameboard();
+
+  gameboard.placeShip("destroyer", [0, 0], true);
+  let boardArray = gameboard.printBoard();
+  expect(boardArray[0][0].shipType).toBe("destroyer");
+
+  gameboard.reset();
+
+  boardArray = gameboard.printBoard;
+  for (let rowIndex = 0; rowIndex < boardArray.length; rowIndex++) {
+    for (let columnIndex = 0; columnIndex < boardArray.length; columnIndex++) {
+      const square = boardArray[rowIndex][columnIndex];
+      expect(square.shipType).toBeNull();
+    }
+  }
 });

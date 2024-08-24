@@ -10,11 +10,15 @@ const createGameboard = () => {
     patrolBoat: createShip(2),
   };
 
-  const board = Array.from({ length: 10 }, () =>
+  let board = Array.from({ length: 10 }, () =>
     Array.from({ length: 10 }, () => createSquare()),
   );
 
-  // ? not sure if we actually need this tbh
+  const reset = () =>
+    (board = Array.from({ length: 10 }, () =>
+      Array.from({ length: 10 }, () => createSquare()),
+    ));
+
   const printBoard = () =>
     board.map((row) => row.map((square) => square.view()));
 
@@ -89,11 +93,11 @@ const createGameboard = () => {
 
   return {
     allShipsSunk,
-    getBoard: () => board,
     getShips: () => ships,
     placeShip,
     printBoard,
     receiveAttack,
+    reset,
   };
 };
 

@@ -1,7 +1,10 @@
 import createGameController from "./createGameController";
 
+// objects
 const game = createGameController();
+const players = game.players;
 
+// event handler that also needs removal which is why it is here and not in createScreenController scope
 const handleClickOnOpponentsSquares = (e) => {
   if (game.getActivePlayer().isComputer()) return;
 
@@ -11,12 +14,16 @@ const handleClickOnOpponentsSquares = (e) => {
   updateScreen();
 };
 
+// helper functions
 const createGrids = () => {
   const SQUARES_PER_SIDE = 10;
   const grids = document.querySelectorAll(".grid");
   const isOpponentsGrid = (gridElement) => gridElement.id === "opponent-grid";
 
   [...grids].forEach((container) => {
+    // clear existing grid
+    container.replaceChildren();
+
     const row = document.createElement("div");
     row.classList.add("row");
     container.appendChild(row);
@@ -35,7 +42,6 @@ const createGrids = () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
         button.classList.add("grid-button");
-        button.disabled = true;
 
         square.appendChild(button);
       }
@@ -58,12 +64,19 @@ const createGrids = () => {
   });
 };
 
-function updateScreen() {
+const disableClicksOnOpponentsBoard = () => {
   const opponentGridButtons = document.querySelectorAll(".grid-button");
   const opponentGridSquares = document.querySelectorAll(
     "#opponent-grid .square",
   );
 
+  [...opponentGridButtons].forEach((button) => (button.disabled = true));
+  [...opponentGridSquares].forEach((square) =>
+    square.removeEventListener("mousedown", handleClickOnOpponentsSquares),
+  );
+};
+
+function updateScreen() {
   const updateGrid = (printedBoard, gridElement) => {
     const squaresDomElements = [...gridElement.querySelectorAll(".square")];
     const isPlayerGrid = () => gridElement.id === "your-grid";
@@ -74,21 +87,29 @@ function updateScreen() {
         columnIndex < printedBoard[rowIndex].length;
         columnIndex++
       ) {
-        const squareObject = printedBoard[columnIndex][rowIndex];
+        const square = printedBoard[columnIndex][rowIndex];
 
         const squareDomElement = squaresDomElements.find(
           (s) => s.dataset.column == columnIndex && s.dataset.row == rowIndex,
         );
 
         // display ships
-        if (isPlayerGrid() && squareObject.shipType) {
+        if (isPlayerGrid() && square.shipType) {
           squareDomElement.classList.add("ship");
-          squareDomElement.setAttribute("data-ship", squareObject.shipType);
+          squareDomElement.setAttribute("data-ship", square.shipType);
+        }
+
+        // attach event listener to opponent's board
+        if (!isPlayerGrid()) {
+          squareDomElement.addEventListener(
+            "mousedown",
+            handleClickOnOpponentsSquares,
+          );
         }
 
         // display hits and misses
-        if (!squareObject.attacked) continue;
-        if (squareObject.shipType) squareDomElement.classList.add("hit");
+        if (!square.attacked) continue;
+        if (square.shipType) squareDomElement.classList.add("hit");
         else squareDomElement.classList.add("miss");
       }
     }
@@ -100,21 +121,14 @@ function updateScreen() {
       document.querySelector("#your-grid"),
       document.querySelector("#opponent-grid"),
     ];
-    const players = game.getPlayers();
 
     players.forEach((player, i) =>
-      updateGrid(player.board.printBoard(), gridElements[i]),
-    );
-  };
-
-  const disableClicksOnOpponentsBoard = () => {
-    [...opponentGridButtons].forEach((button) => (button.disabled = true));
-    [...opponentGridSquares].forEach((square) =>
-      square.removeEventListener("mousedown", handleClickOnOpponentsSquares),
+      updateGrid(player.boardObject.printBoard(), gridElements[i]),
     );
   };
 
   // run
+  createGrids();
   updateGrids();
 
   if (game.activePlayerWins()) {
@@ -128,30 +142,42 @@ function updateScreen() {
 }
 
 const createScreenController = () => {
-  /* SETUP */
-  createGrids();
-  updateScreen();
-
-  const opponentGridSquares = document.querySelectorAll(
-    "#opponent-grid .square",
-  );
-  const opponentGridButtons = document.querySelectorAll(
-    "#opponent-grid .grid-button",
-  );
+  // DOM elements
   const startGameButton = document.querySelector("#start-button");
-
-  [...opponentGridSquares].forEach((square) =>
-    square.addEventListener("mousedown", handleClickOnOpponentsSquares),
+  const randomiseShipsButton = document.querySelector(
+    "#randomise-ships-button",
   );
 
-  startGameButton.addEventListener(
+  // event handlers
+  const handleClickOnRandomShipPlacement = () => {
+    players[0].randomlyPlaceShips();
+    updateScreen();
+  };
+
+  randomiseShipsButton.addEventListener(
     "mousedown",
-    (e) => {
-      opponentGridButtons.forEach((button) => (button.disabled = false));
-      e.target.disabled = true;
-    },
-    { once: true },
+    handleClickOnRandomShipPlacement,
   );
+
+  // event handlers
+  const handleClickOnStartGameButton = (e) => {
+    const opponentGridButtons = document.querySelectorAll(
+      "#opponent-grid .grid-button",
+    );
+
+    e.target.disabled = true;
+    opponentGridButtons.forEach((button) => (button.disabled = false));
+    randomiseShipsButton.disabled = true;
+  };
+
+  // event listeners
+  startGameButton.addEventListener("mousedown", handleClickOnStartGameButton, {
+    once: true,
+  });
+
+  // run
+  disableClicksOnOpponentsBoard();
+  updateScreen();
 };
 
 export default createScreenController;

@@ -3,12 +3,12 @@ import createPlayer from "../js/createPlayer";
 test("There are no clashes if the total number of gameboard coordinates taken up by computers' ships is 17", () => {
   const EXPECTED_COUNT_OF_SQUARES_WITH_SHIPS = 5 + 4 + 3 + 3 + 2;
   const player = createPlayer(true);
-  const boardArray = player.board.getBoard();
+  const boardArray = player.board.printBoard();
 
   let countOfCoordinatesWithShip = 0;
   boardArray.forEach((row) =>
     row.forEach((square) => {
-      if (square.shipType()) countOfCoordinatesWithShip++;
+      if (square.shipType) countOfCoordinatesWithShip++;
     }),
   );
 
@@ -19,13 +19,13 @@ test("There are no clashes if the total number of gameboard coordinates taken up
 
 test("Only valid ship types are on computer's game board", () => {
   const player = createPlayer(true);
-  const boardArray = player.board.getBoard();
+  const boardArray = player.board.printBoard();
   const validShipTypes = Object.keys(player.board.getShips());
   const shipTypesOnBoard = new Set();
 
   boardArray.forEach((row) =>
     row.forEach((square) => {
-      const shipType = square.shipType();
+      const shipType = square.shipType;
       if (!shipType || shipTypesOnBoard.has(shipType)) return;
       shipTypesOnBoard.add(shipType);
     }),
