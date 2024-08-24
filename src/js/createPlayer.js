@@ -9,21 +9,27 @@ const createPlayer = (isComputer = false) => {
     const ships = boardObject.getShips();
 
     for (const shipType in ships) {
-      let startCoordinates = generateRandomCoordinates();
-      let isHorizontal = generateRandomBoolean();
+      let randomStartCoordinates = generateRandomCoordinates();
+      let isHorizontalRandom = generateRandomBoolean();
 
       while (true) {
         try {
-          boardObject.placeShip(shipType, startCoordinates, isHorizontal);
+          boardObject.placeShip(
+            shipType,
+            randomStartCoordinates,
+            isHorizontalRandom,
+            true,
+          );
           break;
         } catch (error) {
-          startCoordinates = generateRandomCoordinates();
-          isHorizontal = generateRandomBoolean();
+          randomStartCoordinates = generateRandomCoordinates();
+          isHorizontalRandom = generateRandomBoolean();
         }
       }
     }
   };
 
+  // run
   randomlyPlaceShips();
 
   return { boardObject, isComputer: () => isComputer, randomlyPlaceShips };

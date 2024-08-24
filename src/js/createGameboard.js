@@ -22,18 +22,50 @@ const createGameboard = () => {
   const printBoard = () =>
     board.map((row) => row.map((square) => square.view()));
 
-  const placeShip = (shipType, startCoordinates, isHorizontal) => {
+  const placeShip = (
+    shipType,
+    startCoordinates,
+    isHorizontal,
+    isRandomlyPlaced = true,
+  ) => {
     const shipObject = ships[shipType];
     const shipLength = shipObject.getLength();
     const shipCoordinates = new Array(shipLength)
       .fill()
       .map(() => [...startCoordinates]);
 
+    // helper functions //
     const isClashing = () =>
       shipCoordinates.some((coordinates) => {
         const square = board[coordinates[0]][coordinates[1]];
         return square.shipType() !== null;
       });
+
+    const isAdjacentToAnotherShip = (shipCoordinatesArray) => {
+      const adjacentSquareHasShip = (coordinatesArray) => {
+        const potentialAdjacentCoordinates = [
+          [coordinatesArray[0] + 1, coordinatesArray[1]],
+          [coordinatesArray[0], coordinatesArray[1] + 1],
+          [coordinatesArray[0], coordinatesArray[1] - 1],
+          [coordinatesArray[0] - 1, coordinatesArray[1]],
+        ];
+
+        const adjacentCoordinates = [];
+        potentialAdjacentCoordinates.forEach((coordinates) => {
+          if (coordinates.some((c) => c < 0 || c > 9)) return;
+          adjacentCoordinates.push(coordinates);
+        });
+
+        return adjacentCoordinates.some((coordinates) => {
+          const squareObject = board[coordinates[0]][coordinates[1]];
+          return squareObject.shipType() !== null;
+        });
+      };
+
+      return shipCoordinatesArray.some((coordinates) =>
+        adjacentSquareHasShip(coordinates),
+      );
+    };
 
     // if placing ship means its tail sticks out of gameboard, we flip it (still keeping its orientation)
     const needToFlipShip = () => {
@@ -58,6 +90,10 @@ const createGameboard = () => {
           : shipCoordinates[i - 1][1] - 1;
     }
 
+    if (isRandomlyPlaced && isAdjacentToAnotherShip(shipCoordinates))
+      throw new Error(
+        `The current ship, ${shipType}, is adjacent to 1+ other ships`,
+      );
     if (isClashing())
       throw new Error(
         `The current ship, ${shipType}, is colliding with 1+ other ships`,
