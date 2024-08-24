@@ -168,6 +168,8 @@ const createScreenController = () => {
     e.target.disabled = true;
     opponentGridButtons.forEach((button) => (button.disabled = false));
     randomiseShipsButton.disabled = true;
+
+    updateScreen();
   };
 
   // event listeners
@@ -176,8 +178,8 @@ const createScreenController = () => {
   });
 
   // run
-  disableClicksOnOpponentsBoard();
   updateScreen();
+  disableClicksOnOpponentsBoard();
 };
 
 export default createScreenController;
