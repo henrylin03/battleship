@@ -160,7 +160,6 @@ const createScreenController = () => {
     handleClickOnRandomShipPlacement,
   );
 
-  // event handlers
   const handleClickOnStartGameButton = (e) => {
     const opponentGridButtons = document.querySelectorAll(
       "#opponent-grid .grid-button",
