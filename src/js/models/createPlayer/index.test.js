@@ -1,4 +1,4 @@
-import createPlayer from "../js/createPlayer";
+import createPlayer from "./index";
 
 test("There are no clashes if the total number of gameboard coordinates taken up by computers' ships is 17", () => {
   const EXPECTED_COUNT_OF_SQUARES_WITH_SHIPS = 5 + 4 + 3 + 3 + 2;

@@ -1,5 +1,5 @@
-import createShip from "./createShip";
-import createSquare from "./createSquare";
+import createShip from "../createShip";
+import createSquare from "../createSquare";
 
 const createGameboard = () => {
   const ships = {

@@ -1,4 +1,4 @@
-import createSquare from "../js/createSquare";
+import createSquare from "./index";
 
 test("After receiving an attack, the square's 'attacked' property is true", () => {
   const square = createSquare();

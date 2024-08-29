@@ -1,5 +1,8 @@
-import createGameboard from "./createGameboard";
-import { generateRandomBoolean, generateRandomCoordinates } from "./helpers";
+import createGameboard from "../createGameboard";
+import {
+  generateRandomBoolean,
+  generateRandomCoordinates,
+} from "../../helpers";
 
 const createPlayer = (isComputer = false) => {
   const boardObject = createGameboard();

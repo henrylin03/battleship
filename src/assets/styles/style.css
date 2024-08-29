@@ -68,22 +68,17 @@ main {
 }
 
 .grid {
-  height: 60vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: var(--border);
-}
-
-.row {
   width: 60vh;
-  display: flex;
-  flex: 1;
+  height: 60vh;
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  border: var(--border);
 }
 
 .square {
+  width: 100%;
+  height: 100%;
   border: var(--border);
-  flex: 1;
 }
 
 .square.ship {

@@ -1,4 +1,4 @@
-import createGameboard from "../js/createGameboard";
+import createGameboard from "./index";
 
 describe("Ensure gameboard is properly printed", () => {
   const gameboard = createGameboard();

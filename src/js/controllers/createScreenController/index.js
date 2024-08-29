@@ -1,4 +1,4 @@
-import createGameController from "./createGameController";
+import createGameController from "../createGameController";
 
 // objects
 const game = createGameController();

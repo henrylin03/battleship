@@ -1,4 +1,4 @@
-import createShip from "../js/createShip";
+import createShip from "./index";
 
 describe("Check ship-sinking behaviour", () => {
   test("a carrier (length=5) is not sunk after being hit once", () => {
