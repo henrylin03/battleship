@@ -107,10 +107,10 @@ const createScreenController = () => {
     disableClicksOnOpponentsBoard();
   };
 
-  randomiseShipsButton.addEventListener(
-    "mousedown",
-    handleClickOnRandomShipPlacement,
-  );
+  // randomiseShipsButton.addEventListener(
+  //   "mousedown",
+  //   handleClickOnRandomShipPlacement,
+  // );
 
   const handleClickOnStartGameButton = (e) => {
     const opponentGridButtons = document.querySelectorAll(

@@ -17,12 +17,11 @@
 
 body {
   font-family: "Open Sans", Helvetica, sans-serif;
-  padding: 12px;
   height: 100dvh;
+  padding-bottom: 24px;
 }
 
 button {
-  cursor: pointer;
   transition: background-color 0.12s;
 }
 
@@ -43,50 +42,95 @@ header {
 
 /* MAIN */
 main {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 5fr 1fr;
+  gap: 20px;
+  height: 85%;
 }
 
 #status {
   background-color: var(--light-gray-colour);
-  min-width: 12vw;
+  width: 200px;
   padding: 12px 16px;
   border-radius: 10px;
   text-align: center;
+
+  /* grid */
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  place-self: center;
+}
+
+/* MAIN: ships */
+#ships-waiting {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  align-self: center;
+  justify-self: end;
+  padding-right: 48px;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 80%;
+  gap: 24px;
+}
+
+#ships-waiting > .flex-container {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 24px;
+}
+
+#ships-waiting .ship-container {
+  border: 5px var(--primary-colour) solid;
+  border-radius: 2rem;
+}
+
+.ship {
+  background-color: var(--ship-colour);
+  width: 50px;
+  border-radius: 2rem;
+}
+
+.carrier {
+  height: calc(5 * 50px);
+}
+
+.battleship {
+  height: calc(4 * 50px);
+}
+
+.destroyer,
+.submarine {
+  height: calc(3 * 50px);
+}
+
+.patrolBoat {
+  height: calc(2 * 50px);
 }
 
 /* MAIN: grids */
-#grids {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  width: 75vw;
-  --border: 1px solid var(--gray-colour);
-}
-
-.grid-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
+#gameboard {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  justify-self: center;
+  align-self: end;
 }
 
 .grid {
-  width: 60vh;
-  height: 60vh;
+  width: fit-content;
+  height: fit-content;
   display: grid;
   grid-template: repeat(10, 1fr) / repeat(10, 1fr);
-  border: var(--border);
+  border: 5px solid var(--gray-colour);
 }
 
 .square {
-  width: 100%;
-  height: 100%;
-  border: var(--border);
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--gray-colour);
 }
 
 .square.ship {
@@ -125,41 +169,53 @@ main {
   background-color: inherit;
 }
 
-/* MAIN: randomise ship positions button */
-#randomise-ships-button {
-  position: absolute;
-  top: 75%;
-  right: 90%;
-  color: var(--ship-colour);
-  border: 1px var(--ship-colour) solid;
-  border-radius: 20%;
-  padding: 4px 5px;
+/* MAIN: buttons to adjust ships when placed */
+#adjust-ship-buttons {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: start;
+  padding-left: 48px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 24px;
 }
 
-#randomise-ships-button:enabled {
+#adjust-ship-buttons button {
   background-color: white;
+  color: var(--ship-colour);
+  border-radius: 100%;
+  padding: 8px;
+
+  display: flex;
+  align-items: center;
 }
 
-#randomise-ships-button:enabled:hover {
+#adjust-ship-buttons button:hover {
   background-color: hsl(211, 58%, 95%);
 }
 
-#randomise-ships-button:enabled:active {
+#adjust-ship-buttons button:active {
   background-color: hsl(211, 58%, 90%);
 }
 
-#randomise-ships-button:disabled {
-  color: var(--gray-colour);
-  border-color: var(--gray-colour);
+/* MAIN: start game button */
+#start-game {
+  grid-column: 2 / 3;
+  grid-row: 3;
+  place-self: center;
 }
 
-/* MAIN: start game button */
 #start-button {
   background-color: var(--primary-colour);
   color: white;
-  min-width: 8vw;
+  width: 144px;
   padding: 15px 5px;
   border-radius: 10px;
+
+  /* variables */
   --primary-colour-lighter: hsl(204, 100%, 55%);
   --primary-colour-darker: hsl(204, 95%, 48%);
 }
