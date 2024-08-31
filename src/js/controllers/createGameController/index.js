@@ -1,4 +1,4 @@
-import createPlayer from "../../models/createPlayer";
+import createPlayer from "../../factories/createPlayer";
 import { generateRandomCoordinates } from "../../helpers";
 
 const players = [createPlayer(), createPlayer(true)];
