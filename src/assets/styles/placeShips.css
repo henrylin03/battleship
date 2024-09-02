@@ -1,0 +1,169 @@
+/* MAIN: ships */
+#ships-waiting {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  align-self: center;
+  justify-self: end;
+  padding-right: 48px;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 80%;
+  gap: 24px;
+}
+
+#ships-waiting > .flex-container {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 24px;
+}
+
+#ships-waiting .ship-container {
+  border: 5px var(--primary-colour) solid;
+  border-radius: 2rem;
+}
+
+.ship {
+  background-color: var(--ship-colour);
+  width: 50px;
+  border-radius: 2rem;
+}
+
+.carrier {
+  height: calc(5 * 50px);
+}
+
+.battleship {
+  height: calc(4 * 50px);
+}
+
+.destroyer,
+.submarine {
+  height: calc(3 * 50px);
+}
+
+.patrolBoat {
+  height: calc(2 * 50px);
+}
+
+/* MAIN: grids */
+#gameboard {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  justify-self: center;
+  align-self: end;
+}
+
+.grid {
+  width: fit-content;
+  height: fit-content;
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  border: 5px solid var(--gray-colour);
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--gray-colour);
+}
+
+.square.ship {
+  background-color: var(--ship-colour);
+}
+
+.square.hit {
+  background-color: var(--hit-color);
+}
+
+.square.miss {
+  background-color: hsl(60, 28%, 80%);
+}
+
+.grid-button {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  --hover-colour: hsl(60, 20%, 95%);
+  --click-colour: hsl(60, 50%, 80%);
+  transition: background-color 0.1s ease;
+}
+
+.grid-button:hover {
+  background-color: var(--hover-colour);
+}
+
+.grid-button:active {
+  background-color: var(--click-colour);
+}
+
+.grid-button:disabled,
+.hit .grid-button:hover,
+.miss .grid-button:hover {
+  background-color: inherit;
+}
+
+/* MAIN: buttons to adjust ships when placed */
+#adjust-ship-buttons {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: start;
+  padding-left: 48px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+#adjust-ship-buttons button {
+  background-color: white;
+  color: var(--ship-colour);
+  border-radius: 100%;
+  padding: 8px;
+
+  display: flex;
+  align-items: center;
+}
+
+#adjust-ship-buttons button:hover {
+  background-color: hsl(211, 58%, 95%);
+}
+
+#adjust-ship-buttons button:active {
+  background-color: hsl(211, 58%, 90%);
+}
+
+/* MAIN: start game button */
+#start-game {
+  grid-column: 2 / 3;
+  grid-row: 3;
+  place-self: center;
+}
+
+#start-button {
+  background-color: var(--primary-colour);
+  color: white;
+  width: 144px;
+  padding: 15px 5px;
+  border-radius: 10px;
+
+  /* variables */
+  --primary-colour-lighter: hsl(204, 100%, 55%);
+  --primary-colour-darker: hsl(204, 95%, 48%);
+}
+
+#start-button:enabled:hover {
+  background-color: var(--primary-colour-lighter);
+}
+
+#start-button:enabled:active {
+  background-color: var(--primary-colour-darker);
+}
+
+#start-button:disabled {
+  filter: saturate(0.25);
+}

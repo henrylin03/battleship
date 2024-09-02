@@ -3,7 +3,7 @@ import { generateRandomCoordinates } from "../../helpers";
 
 const players = [createPlayer(), createPlayer(true)];
 
-const createGameController = () => {
+const createGameplayController = () => {
   let activePlayer = players[0];
   const switchPlayers = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
@@ -41,4 +41,4 @@ const createGameController = () => {
   };
 };
 
-export default createGameController;
+export default createGameplayController;

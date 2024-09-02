@@ -1,8 +1,8 @@
-import createGameController from "../createGameController";
+import createGameplayController from "../createGameplayController";
 import createGrids from "./createGrids";
 
 // objects
-const game = createGameController();
+const game = createGameplayController();
 const players = game.players;
 
 // event handler that also needs removal which is why it is here and not in createScreenController scope
@@ -93,7 +93,7 @@ function updateScreen() {
   }
 }
 
-const createScreenController = () => {
+const createGameScreenController = () => {
   // DOM elements
   const startGameButton = document.querySelector("#start-button");
   const randomiseShipsButton = document.querySelector(
@@ -134,4 +134,4 @@ const createScreenController = () => {
   disableClicksOnOpponentsBoard();
 };
 
-export default createScreenController;
+export default createGameScreenController;
